@@ -41,4 +41,15 @@ public class AuthController {
         String email = authentication.getName();
         return ResponseEntity.ok(authService.deleteAccount(email));
     }
+
+    @GetMapping("/internal/users/{userId}/validate")
+    public ResponseEntity<Boolean> validateUser(@PathVariable Integer userId) {
+        log.info("API called: /auth/internal/users/{}/validate", userId);
+        boolean isValid = authService.isUserValid(userId);
+        if (isValid) {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+        }
+    }
 }

@@ -9,9 +9,8 @@ import com.devapix.auth_service.dto.response.RegisterResponse;
 public interface AuthService {
 
     RegisterResponse register(RegisterRequest request);
-
     LoginResponse login(LoginRequest request);
-
     DeleteResponse deleteAccount(String email);
+    boolean isUserValid(Integer userId);
 
 }
