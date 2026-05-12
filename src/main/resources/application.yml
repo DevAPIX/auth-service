@@ -4,6 +4,8 @@ spring:
 
   application:
     name: auth-service
+  messages:
+    basename: error-messages
 
   datasource:
     url: ${DB_URL}
@@ -16,7 +18,7 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
-  expiration: 900000
+  expiration: 86400000
 
 logging:
   file:

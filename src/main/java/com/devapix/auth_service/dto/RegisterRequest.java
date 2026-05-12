@@ -8,15 +8,15 @@ import lombok.Data;
 @Data
 public class RegisterRequest {
 
-    @NotBlank
-    @Size(min = 3, max = 50)
-    private String name;
+        @NotBlank(message = "{name.required}")
+        @Size(min = 3, max = 50, message = "{name.size}")
+        private String name;
 
-    @NotBlank
-    @Email
-    private String email;
+        @NotBlank(message = "{email.required}")
+        @Email(message = "{email.invalid}")
+        private String email;
 
-    @NotBlank
-    @Size(min = 6)
-    private String password;
+        @NotBlank(message = "{password.required}")
+        @Size(min = 6, message = "{password.size}")
+        private String password;
 }
