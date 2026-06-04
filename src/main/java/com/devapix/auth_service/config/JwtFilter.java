@@ -1,5 +1,4 @@
 package com.devapix.auth_service.config;
-
 import com.devapix.auth_service.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
