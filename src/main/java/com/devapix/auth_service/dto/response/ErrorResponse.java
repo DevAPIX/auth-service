@@ -1,11 +1,11 @@
 package com.devapix.auth_service.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.time.LocalDateTime;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import java.time.LocalDateTime;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor

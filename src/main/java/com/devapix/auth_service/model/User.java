@@ -2,9 +2,9 @@ package com.devapix.auth_service.model;
 
 import com.devapix.auth_service.enums.Role;
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import java.sql.Timestamp;
 
 @Entity
 @Data
