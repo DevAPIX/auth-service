@@ -1,20 +1,21 @@
 package com.devapix.auth_service.advice;
 
+
 import com.devapix.auth_service.dto.response.ErrorResponse;
 import com.devapix.auth_service.exception.UserAlreadyExistsException;
 import com.devapix.auth_service.exception.UserNotFoundException;
-import org.springframework.security.authentication.BadCredentialsException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -51,9 +52,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex) {
-        String message = messageSource.getMessage("invalid.credentials", null, Locale.getDefault());
+        String message = messageSource.getMessage("invalid.credentials", null, "Invalid email or password", Locale.getDefault());
         ErrorResponse response = ErrorResponse.builder().timestamp(LocalDateTime.now()).status(HttpStatus.UNAUTHORIZED.value()).message(message).build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
-  
 }

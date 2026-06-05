@@ -1,5 +1,6 @@
 package com.devapix.auth_service.service.impl;
 
+
 import com.devapix.auth_service.dto.LoginRequest;
 import com.devapix.auth_service.dto.RegisterRequest;
 import com.devapix.auth_service.dto.response.DeleteResponse;
@@ -12,16 +13,16 @@ import com.devapix.auth_service.model.User;
 import com.devapix.auth_service.repository.UserRepo;
 import com.devapix.auth_service.service.AuthService;
 import com.devapix.auth_service.service.JwtService;
+import java.util.*;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import lombok.extern.slf4j.Slf4j;
-
-import java.util.Locale;
 
 @Slf4j
 @Service
@@ -49,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
         userRepo.save(user);
         String token = jwtService.generateToken(user.getEmail(), user.getUserid(), user.getRole().name());
         log.info("User registered successfully: {}", user.getEmail());
-        return new RegisterResponse(token, user.getEmail(), user.getRole().name());
+        return new RegisterResponse(token, user.getUserid(), user.getEmail(), user.getRole().name());
     }
 
     @Override
@@ -64,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
         });
         String token = jwtService.generateToken(user.getEmail(), user.getUserid(), user.getRole().name());
         log.info("Login successful for email: {}", user.getEmail());
-        return new LoginResponse(token, user.getEmail(), user.getRole().name());
+        return new LoginResponse(token, user.getUserid(), user.getEmail(), user.getRole().name());
     }
 
     @Override
@@ -84,5 +85,28 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean isUserValid(Integer userId) {
         return userRepo.findById(userId).isPresent();
+    }
+
+    @Override
+    public DeleteResponse deleteAccountById(Integer userId) {
+        log.info("Delete account request for userId: {}", userId);
+        User user = userRepo.findById(userId).orElseThrow(() -> {
+            log.error("User not found for deletion: {}", userId);
+            return new UserNotFoundException("user.not.found");
+        });
+        userRepo.delete(user);
+        String message = messageSource.getMessage("account.deleted", null, Locale.getDefault());
+        log.info("Account deleted successfully for userId: {}", userId);
+        return new DeleteResponse(message);
+    }
+
+    @Override
+    public User findById(Integer userId) {
+        return userRepo.findById(userId).orElse(null);
+    }
+
+    @Override
+    public List<User> findByIds(List<Integer> userIds) {
+        return userRepo.findAllById(userIds);
     }
 }
